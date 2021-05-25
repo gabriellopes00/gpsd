@@ -1,17 +1,15 @@
 package main
 
 import (
-	"fmt"
-	ctr "gps-worker/app/controllers"
-	"log"
+	d "gps-worker/domain"
+	u "gps-worker/usecases"
+
+	m "gps-worker/app/mock"
 )
 
 func main() {
-	controller := ctr.Controller{}
-	position, err := controller.CreateService(-24.00097794064844, -46.1797712784327)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	entrypoint := d.Position{Name: "My House", Latitude: -23.16862852698391, Longitude: -46.868998411087226}
+	positions := m.Positions()
 
-	fmt.Println(position)
+	u.CalcDistance(&entrypoint, positions)
 }
