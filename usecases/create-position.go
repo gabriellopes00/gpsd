@@ -11,8 +11,8 @@ type PositionService interface {
 }
 
 type Service struct {
-	infra.PositionRepository
-	infra.PositionValidator
+	infra.FakeRepository
+	infra.PositionGoValidator
 }
 
 func (service *Service) Create(latitude, longitude float64) (position domain.Position, err error) {

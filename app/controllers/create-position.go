@@ -6,7 +6,7 @@ import (
 )
 
 type Controller struct {
-	usecases.PositionService
+	usecases.Service
 }
 
 func (c *Controller) CreateService(latitude, longitude float64) (position domain.Position, err error) {
