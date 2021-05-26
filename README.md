@@ -1,6 +1,12 @@
 # GPS Worker
 
-A location manager that calculate position and paths between coordinates points based on gps data.
+A location manager that calculate distance between coordinates points based on gps data.
+
+## Using
+
+```bash
+go get github.com/gabriellopes00/gps-worker
+```
 
 ## License ✒
 
