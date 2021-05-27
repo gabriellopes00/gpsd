@@ -4,7 +4,6 @@ import (
 	d "gps-worker/domain"
 	i "gps-worker/infra"
 	"log"
-	m "math"
 )
 
 func CalcMultipleDistances(entrypoint *d.Position, positions []d.Position) []d.Position {
@@ -22,15 +21,4 @@ func CalcMultipleDistances(entrypoint *d.Position, positions []d.Position) []d.P
 	}
 
 	return calculated
-}
-
-// Round float values to integer ones
-func round(num float64) int {
-	return int(num + m.Copysign(0.5, num))
-}
-
-// Truncate distance decimal cases
-func toFixed(num float64, precision int) float64 {
-	output := m.Pow(10, float64(precision))
-	return float64(round(num*output)) / output
 }

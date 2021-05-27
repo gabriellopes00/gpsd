@@ -5,17 +5,17 @@
 
 # tasks
 
-- receive victim location from its cellphone
+- receive victim location from its cellphone via web socket
 - validate her credentials
-- send a signal to get victim city's helpers current position
-- get helpers position
-- calculate the nearest ones
+- send a signal to get victim city's helpers current position via websocket
+- receive helpers position
+- calculate the nearest ones [ok]
 - get path from them to the victim
-- send call to the helpers
+- send call only to nearest helpers, and a simple notification to the most distant
 
 ## rules
 
-- to run in parallel ==> send signal ---> receive location ---> calculate nearest ones ---> get paths with google api ---> send calls
+- to run in parallel ==> send signal ---> receive location ---> calculate nearest ones ---> get paths with google api ---> send calls and notifications
 - if some one accept a call, make the others know that there is one going to help the victim, with its position and time to the victim
 
 ### calcs - run in parallel

@@ -5,13 +5,13 @@ import "gps-worker/domain"
 func Positions() []domain.Position {
 	return []domain.Position{
 		{Name: "Back Street", Latitude: -23.16836775872856, Longitude: -46.86844889353921}, // 1
+		{Name: "Guarujá Shopping", Latitude: -23.99741141702058, Longitude: -46.257324931809414},
 		{Name: "Igreja Vila Rio Braco", Latitude: -23.175687012472864, Longitude: -46.88666891121561},
 		{Name: "Depósito de Lixo Tarumã", Latitude: -23.170281280404648, Longitude: -46.86895046659479},
 		{Name: "Posto de Saúde Tarumã", Latitude: -23.171314472103013, Longitude: -46.869454721877126},
 		{Name: "Maxi Shoppig", Latitude: -23.16830711737204, Longitude: -46.89002342909265},
 		{Name: "CRAS", Latitude: -23.169839890585077, Longitude: -46.86891828009079},
 		{Name: "Agroplantas", Latitude: -23.171403208452585, Longitude: -46.88511264843324},
-		{Name: "Guarujá Shopping", Latitude: -23.99741141702058, Longitude: -46.257324931809414},
 		{Name: "Jundiaí Shopping", Latitude: -23.199079818030032, Longitude: -46.890705414208945},
 		{Name: "Terminal Colônia", Latitude: -23.18443944698137, Longitude: -46.85434688653744},
 		{Name: "Terminal Central", Latitude: -23.18982501602949, Longitude: -46.88736588843409},
