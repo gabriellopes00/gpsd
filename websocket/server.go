@@ -1,44 +1,90 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"gps-worker/app/mock"
+	"gps-worker/domain"
+	"gps-worker/usecases/calc"
+	"log"
+	"net/http"
+	"strconv"
 
 	"github.com/gorilla/websocket"
-	"github.com/labstack/echo/v4"
 )
 
-var (
-	upgrader = websocket.Upgrader{}
-)
+var up = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	CheckOrigin:     func(r *http.Request) bool { return true }, // allow everywhere access
+}
 
-func hello(c echo.Context) error {
-	ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
-	if err != nil {
-		return err
+func Handler(w http.ResponseWriter, r *http.Request) {
+	keys := r.URL.Query()
+	name := keys.Get("username")
+	role := keys.Get("role")
+	lat, _ := strconv.ParseFloat(keys.Get("lat"), 64)
+	lng, _ := strconv.ParseFloat(keys.Get("lng"), 64)
+
+	user := &User{
+		Name:     name,
+		Role:     role,
+		Position: domain.Position{Latitude: lat, Longitude: lng},
 	}
-	defer ws.Close()
 
+	fmt.Println(user)
+
+	// ws, err := up.Upgrade(w, r, nil)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+
+}
+
+func reader(conn *websocket.Conn) {
 	for {
-		// Write
-		err := ws.WriteMessage(websocket.TextMessage, []byte("Hello, Client!"))
+		messageType, p, err := conn.ReadMessage()
 		if err != nil {
-			c.Logger().Error(err)
+			log.Println(err)
+			return
 		}
 
-		// Read
-		_, msg, err := ws.ReadMessage()
-		if err != nil {
-			c.Logger().Error(err)
+		victim := domain.Position{}
+		json.Unmarshal(p, &victim)
+
+		positions := mock.Positions()
+		res := calc.GetDistances(&victim, positions)
+
+		for i1 := range res {
+			for i2 := range res {
+				if res[i1].Distance < res[i2].Distance {
+					res[i1], res[i2] = res[i2], res[i1]
+				}
+			}
 		}
-		fmt.Printf("%s\n", msg)
+
+		for i := 0; i < 5; i++ {
+			fmt.Println(res[i])
+		}
+
+		if err := conn.WriteMessage(messageType, []byte("Help on the way")); err != nil {
+			log.Println(err)
+			return
+		}
+
 	}
 }
 
-// func main() {
-// 	e := echo.New()
-// 	e.Use(middleware.Logger())
-// 	e.Use(middleware.Recover())
-// 	e.Static("/", "./public")
-// 	e.GET("/ws", hello)
-// 	e.Logger.Fatal(e.Start(":1323"))
-// }
+func homePage(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Home Page")
+}
+
+func setupRoutes() {
+	http.HandleFunc("/", homePage)
+	http.HandleFunc("/ws", Handler)
+}
+
+func main() {
+	setupRoutes()
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}

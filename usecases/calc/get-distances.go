@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func CalcMultipleDistances(entrypoint *d.Position, positions []d.Position) []d.Position {
+func GetDistances(entrypoint *d.Position, positions []d.Position) []d.Position {
 	var calculated []d.Position
 	for _, p := range positions {
 		err := i.Validate(p.Latitude, p.Longitude)
