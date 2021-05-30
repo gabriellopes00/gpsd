@@ -12,11 +12,11 @@ func CalcMultipleDistances(entrypoint *d.Position, positions []d.Position) []d.P
 		err := i.Validate(p.Latitude, p.Longitude)
 		if err != nil {
 			log.Fatalln(err)
-			continue
+			break
 		}
 
-		result := CalcDistance(entrypoint.Latitude, entrypoint.Longitude, p.Latitude, p.Longitude)
-		p.Distance = result
+		distance := CalcDistance(entrypoint.Latitude, entrypoint.Longitude, p.Latitude, p.Longitude)
+		p.Distance = distance
 		calculated = append(calculated, p)
 	}
 
