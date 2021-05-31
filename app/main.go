@@ -1,10 +1,8 @@
 package main
 
 import (
-	"fmt"
 	m "gps-worker/app/mock"
 	d "gps-worker/domain"
-	"log"
 
 	"gps-worker/usecases/calc"
 )
@@ -12,17 +10,17 @@ import (
 func main() {
 	entrypoint := d.Position{Name: "Victim", Latitude: -23.16862852698391, Longitude: -46.868998411087226}
 	positions := m.Positions()
-	res := calc.Sort(calc.GetDistances(&entrypoint, positions))
+	// res := calc.Sort(calc.GetDistances(&entrypoint, positions))
 
-	const helpers uint8 = 10
+	calc.GetRadius(entrypoint, positions)
 
-	filtered, err := calc.Filter(res, helpers, uint8(0))
-	if err != nil {
-		log.Fatalln(err)
-		panic(err)
-	}
+	// filtered, err := calc.Filter(&entrypoint, &res)
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// 	panic(err)
+	// }
 
-	for _, v := range filtered {
-		fmt.Println(v)
-	}
+	// for _, v := range *filtered {
+	// 	fmt.Println(v)
+	// }
 }

@@ -18,7 +18,7 @@
 ### select useful helpers
 
 - cache them positions per max of 10min
-- get only helpers in victim radius from the cache, maybe 10km (if there is no one in this radius, send to nearest ones outside the radius, and tell to the victim that maybe the help can get late)
+- get only helpers in victim radius from the cache, maybe 11km (if there is no one in this radius, send to nearest ones outside the radius, and tell to the victim that maybe the help can get late)
 - if the data from the cache had been gotten right now, use them, else, use them to select the helpers, but send other request to get more accurate positions, and cache this newer positions instead of the the older ones
 
 ### calculate distance and path until the victim

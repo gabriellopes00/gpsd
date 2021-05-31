@@ -8,6 +8,7 @@ func Positions() []domain.Position {
 		{Name: "Guarujá Shopping", Latitude: -23.99741141702058, Longitude: -46.257324931809414},
 		{Name: "Igreja Vila Rio Braco", Latitude: -23.175687012472864, Longitude: -46.88666891121561},
 		{Name: "Depósito de Lixo Tarumã", Latitude: -23.170281280404648, Longitude: -46.86895046659479},
+		{Name: "SP", Latitude: -23.35548480018806, Longitude: -46.87909902474483},
 		{Name: "Posto de Saúde Tarumã", Latitude: -23.171314472103013, Longitude: -46.869454721877126},
 		{Name: "Maxi Shoppig", Latitude: -23.16830711737204, Longitude: -46.89002342909265},
 		{Name: "CRAS", Latitude: -23.169839890585077, Longitude: -46.86891828009079},

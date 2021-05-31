@@ -7,7 +7,7 @@ func deg2rad(deg float64) float64 {
 }
 
 func CalcDistance(lat1, lng1, lat2, lng2 float64) uint16 {
-	const earthRadiusKm = 6371
+	const earthRadius = 6371
 
 	degLat := deg2rad(lat2 - lat1)
 	degLng := deg2rad(lng2 - lng1)
@@ -18,6 +18,6 @@ func CalcDistance(lat1, lng1, lat2, lng2 float64) uint16 {
 	angle := m.Pow(m.Sin(degLat/2), 2) + m.Pow(m.Sin(degLng/2), 2)*m.Cos(lat1)*m.Cos(lat2)
 	tan := 2 * m.Atan2(m.Sqrt(angle), m.Sqrt(1-angle))
 
-	distance := earthRadiusKm * tan * 1000
+	distance := earthRadius * tan * 1000
 	return uint16(m.Trunc(distance))
 }
