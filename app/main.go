@@ -4,23 +4,21 @@ import (
 	m "gps-worker/app/mock"
 	d "gps-worker/domain"
 
-	"gps-worker/usecases/calc"
+	c "gps-worker/usecases/calc"
+	mail "gps-worker/usecases/mail"
+	p "gps-worker/usecases/path"
+	v "gps-worker/usecases/validation"
 )
 
 func main() {
 	entrypoint := d.Position{Name: "Victim", Latitude: -23.16862852698391, Longitude: -46.868998411087226}
 	positions := m.Positions()
-	// res := calc.Sort(calc.GetDistances(&entrypoint, positions))
 
-	calc.GetRadius(entrypoint, positions)
+	channel := make(chan d.Position)
 
-	// filtered, err := calc.Filter(&entrypoint, &res)
-	// if err != nil {
-	// 	log.Fatalln(err)
-	// 	panic(err)
-	// }
-
-	// for _, v := range *filtered {
-	// 	fmt.Println(v)
-	// }
+	v.ValidateCoordinates(positions)
+	go c.GetRadius(entrypoint, positions, channel)
+	go c.GetDistances(&entrypoint, channel)
+	go p.GetPositionPath(entrypoint, channel)
+	mail.SendHelperMail(entrypoint, channel)
 }

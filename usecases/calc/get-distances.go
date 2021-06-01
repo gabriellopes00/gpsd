@@ -2,23 +2,12 @@ package calc
 
 import (
 	d "gps-worker/domain"
-	i "gps-worker/infra"
-	"log"
 )
 
-func GetDistances(entrypoint *d.Position, positions []d.Position) []d.Position {
-	var calculated []d.Position
-	for _, p := range positions {
-		err := i.Validate(p.Latitude, p.Longitude)
-		if err != nil {
-			log.Fatalln(err)
-			break
-		}
-
+func GetDistances(entrypoint *d.Position, channel chan d.Position) {
+	for p := range channel {
 		distance := CalcDistance(entrypoint.Latitude, entrypoint.Longitude, p.Latitude, p.Longitude)
 		p.Distance = distance
-		calculated = append(calculated, p)
+		channel <- p
 	}
-
-	return calculated
 }
