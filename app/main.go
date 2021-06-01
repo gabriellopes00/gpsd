@@ -3,7 +3,9 @@ package main
 import (
 	m "gps-worker/app/mock"
 	d "gps-worker/domain"
+	"log"
 
+	"gps-worker/usecases/cache"
 	c "gps-worker/usecases/calc"
 	mail "gps-worker/usecases/mail"
 	p "gps-worker/usecases/path"
@@ -16,7 +18,11 @@ func main() {
 
 	channel := make(chan d.Position)
 
-	v.ValidateCoordinates(positions)
+	if err := v.ValidateCoordinates(positions); err != nil {
+		log.Fatalln(err)
+	}
+
+	go cache.CachePositions(positions)
 	go c.GetRadius(entrypoint, positions, channel)
 	go c.GetDistances(&entrypoint, channel)
 	go p.GetPositionPath(entrypoint, channel)
