@@ -5,9 +5,10 @@ import (
 	"time"
 )
 
-func GetPositionPath(entrypoint domain.Position, channel chan domain.Position) {
+func GetPositionPath(entrypoint domain.Position, channel, paths chan domain.Position) {
 	for p := range channel {
 		time.Sleep(time.Millisecond * 2)
-		channel <- p
+		paths <- p
 	}
+	close(paths)
 }
