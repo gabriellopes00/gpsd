@@ -1,9 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"gps-worker/app/mock"
 	d "gps-worker/domain"
+	"io/ioutil"
 	"log"
+	"net/http"
 
 	c "gps-worker/usecases/calc"
 	m "gps-worker/usecases/mail"
@@ -13,7 +16,24 @@ import (
 )
 
 func main() {
-	entrypoint := &d.Position{Name: "Victim", Latitude: -23.16862852698391, Longitude: -46.868998411087226}
+	http.HandleFunc("/help", HandleHelpRequest)
+
+	log.Fatalln(http.ListenAndServe(":8778", nil))
+}
+
+func HandleHelpRequest(wr http.ResponseWriter, r *http.Request) {
+	var position d.Position
+	body, _ := ioutil.ReadAll(r.Body)
+	if err := json.Unmarshal(body, &position); err != nil {
+		http.Error(wr, "invalid body request", http.StatusBadRequest)
+	}
+
+	go GetHelp(position.Latitude, position.Longitude)
+	wr.Write([]byte("Help on the way"))
+}
+
+func GetHelp(lat, lng float64) {
+	entrypoint := &d.Position{Name: "Victim", Latitude: lat, Longitude: lng}
 	positions := mock.Positions()
 
 	if err := v.ValidateCoordinates(positions); err != nil {
