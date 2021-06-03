@@ -6,8 +6,9 @@ import (
 	"log"
 
 	c "gps-worker/usecases/calc"
-	"gps-worker/usecases/mail"
+	m "gps-worker/usecases/mail"
 	p "gps-worker/usecases/path"
+	s "gps-worker/usecases/sort"
 	v "gps-worker/usecases/validation"
 )
 
@@ -21,10 +22,9 @@ func main() {
 
 	paths := make(chan *d.Position)
 
-	inRadius := c.GetRadius(entrypoint, positions)
+	inRadius := c.GetInRadius(entrypoint, positions)
 	c.GetDistances(entrypoint, inRadius)
-
-	ordered := c.Sort(inRadius)
-	go p.GetPositionPath(entrypoint, ordered, paths)
-	mail.SendHelperMail(paths)
+	ordered := s.Sort(inRadius)
+	go p.GetPositionPath(entrypoint, s.Filter(ordered), paths)
+	m.SendHelperMail(paths)
 }

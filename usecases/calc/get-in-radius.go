@@ -1,10 +1,8 @@
 package calc
 
-import (
-	d "gps-worker/domain"
-)
+import d "gps-worker/domain"
 
-func GetRadius(entrypoint *d.Position, positions []*d.Position) []*d.Position {
+func GetInRadius(entrypoint *d.Position, positions []*d.Position) []*d.Position {
 	LatRadius := []float64{entrypoint.Latitude + 0.1, entrypoint.Latitude - 0.1}
 	LngRadius := []float64{entrypoint.Longitude + 0.1, entrypoint.Longitude - 0.1}
 
