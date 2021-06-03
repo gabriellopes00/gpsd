@@ -1,12 +1,12 @@
 package path
 
 import (
-	"gps-worker/domain"
+	d "gps-worker/domain"
 	"time"
 )
 
-func GetPositionPath(entrypoint domain.Position, channel, paths chan domain.Position) {
-	for p := range channel {
+func GetPositionPath(entrypoint d.Position, positions []d.Position, paths chan<- d.Position) {
+	for _, p := range positions {
 		time.Sleep(time.Millisecond * 2)
 		paths <- p
 	}

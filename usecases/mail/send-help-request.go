@@ -5,8 +5,11 @@ import (
 	"gps-worker/domain"
 )
 
-func SendHelperMail(entrypoint domain.Position, channel <-chan domain.Position) {
-	for p := range channel {
-		fmt.Println(p)
+func SendHelperMail(entrypoint domain.Position, paths <-chan domain.Position) {
+	for p := range paths {
+		if p.Distance == 63 {
+			fmt.Println(p)
+			break
+		}
 	}
 }

@@ -4,11 +4,12 @@ import (
 	d "gps-worker/domain"
 )
 
-func GetDistances(entrypoint *d.Position, channel, distances chan d.Position) {
-	for p := range channel {
+func GetDistances(entrypoint *d.Position, positions []d.Position) []d.Position {
+	var distances []d.Position
+	for _, p := range positions {
 		distance := CalcDistance(entrypoint.Latitude, entrypoint.Longitude, p.Latitude, p.Longitude)
 		p.Distance = distance
-		distances <- p
+		distances = append(distances, p)
 	}
-	close(distances)
+	return distances
 }
