@@ -1,10 +1,13 @@
 package main
 
 import (
+	"fmt"
 	m "gps-worker/app/mock"
 	d "gps-worker/domain"
+	"gps-worker/infra"
 	"log"
 
+	"gps-worker/usecases/cache"
 	c "gps-worker/usecases/calc"
 	mail "gps-worker/usecases/mail"
 	p "gps-worker/usecases/path"
@@ -23,9 +26,17 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	// go cache.CachePositions(positions)
+	go cache.CachePositions(positions)
 	go c.GetRadius(entrypoint, positions, radius)
 	go c.GetDistances(&entrypoint, radius, distances)
 	go p.GetPositionPath(entrypoint, distances, paths)
 	mail.SendHelperMail(entrypoint, paths)
+
+	cache := infra.RedisCache{}
+	cache.Connect()
+	data, err := cache.Get("Back Street")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(data)
 }

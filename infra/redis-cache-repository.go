@@ -20,6 +20,15 @@ type CacheRepository interface {
 
 var ctx = context.Background()
 
+func (c *RedisCache) Connect() {
+	c.client = redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "",
+		DB:       0,
+	})
+
+}
+
 type RedisCache struct {
 	client *redis.Client
 }
