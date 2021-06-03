@@ -2,8 +2,8 @@ package mock
 
 import "gps-worker/domain"
 
-func Positions() []domain.Position {
-	return []domain.Position{
+func Positions() []*domain.Position {
+	return []*domain.Position{
 		{Name: "Back Street", Latitude: -23.16836775872856, Longitude: -46.86844889353921}, // 1
 		{Name: "Guarujá Shopping", Latitude: -23.99741141702058, Longitude: -46.257324931809414},
 		{Name: "Igreja Vila Rio Braco", Latitude: -23.175687012472864, Longitude: -46.88666891121561},

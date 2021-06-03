@@ -2,7 +2,7 @@ package calc
 
 import d "gps-worker/domain"
 
-func Sort(arr []d.Position) []d.Position {
+func Sort(arr []*d.Position) []*d.Position {
 	len := len(arr)
 	if len == 1 {
 		return arr
@@ -10,8 +10,8 @@ func Sort(arr []d.Position) []d.Position {
 
 	middle := int(len / 2)
 
-	left := make([]d.Position, middle)
-	right := make([]d.Position, len-middle)
+	left := make([]*d.Position, middle)
+	right := make([]*d.Position, len-middle)
 
 	for i := 0; i < len; i++ {
 		if i < middle {
@@ -24,8 +24,8 @@ func Sort(arr []d.Position) []d.Position {
 	return merge(Sort(left), Sort(right))
 }
 
-func merge(left, right []d.Position) (result []d.Position) {
-	result = make([]d.Position, len(left)+len(right))
+func merge(left, right []*d.Position) (result []*d.Position) {
+	result = make([]*d.Position, len(left)+len(right))
 
 	i := 0
 

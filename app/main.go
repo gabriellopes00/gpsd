@@ -1,7 +1,7 @@
 package main
 
 import (
-	m "gps-worker/app/mock"
+	"gps-worker/app/mock"
 	d "gps-worker/domain"
 	"log"
 
@@ -12,16 +12,19 @@ import (
 )
 
 func main() {
-	entrypoint := d.Position{Name: "Victim", Latitude: -23.16862852698391, Longitude: -46.868998411087226}
-	positions := m.Positions()
-
-	paths := make(chan d.Position)
+	entrypoint := &d.Position{Name: "Victim", Latitude: -23.16862852698391, Longitude: -46.868998411087226}
+	positions := mock.Positions()
 
 	if err := v.ValidateCoordinates(positions); err != nil {
 		log.Fatalln(err)
 	}
 
-	ordered := c.Sort(c.GetDistances(&entrypoint, c.GetRadius(&entrypoint, positions)))
+	paths := make(chan *d.Position)
+
+	inRadius := c.GetRadius(entrypoint, positions)
+	c.GetDistances(entrypoint, inRadius)
+
+	ordered := c.Sort(inRadius)
 	go p.GetPositionPath(entrypoint, ordered, paths)
-	mail.SendHelperMail(entrypoint, paths)
+	mail.SendHelperMail(paths)
 }
