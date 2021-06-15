@@ -2,7 +2,6 @@ package infra
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -21,7 +20,7 @@ type CacheRepository interface {
 var ctx = context.Background()
 
 func (c *RedisCache) Connect() {
-	c.client = redis.NewClient(&redis.Options{
+	c.Client = redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
 		Password: "",
 		DB:       0,
@@ -30,13 +29,12 @@ func (c *RedisCache) Connect() {
 }
 
 type RedisCache struct {
-	client *redis.Client
+	Client *redis.Client
 }
 
 func (c *RedisCache) Set(data CacheData) error {
-	err := c.client.Set(ctx, data.Key, data.Value, time.Minute*10).Err()
+	err := c.Client.Set(ctx, data.Key, data.Value, time.Minute*10).Err()
 	if err != nil {
-		log.Fatalln(err)
 		return err
 	}
 
@@ -44,9 +42,8 @@ func (c *RedisCache) Set(data CacheData) error {
 }
 
 func (c *RedisCache) Get(key string) (CacheData, error) {
-	value, err := c.client.Get(ctx, key).Result()
+	value, err := c.Client.Get(ctx, key).Result()
 	if err != nil {
-		log.Fatalln(err)
 		return CacheData{}, err
 	}
 
