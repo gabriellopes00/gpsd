@@ -6,9 +6,10 @@ import (
 )
 
 func CachePositions(positions []domain.Position) error {
+	cache := i.RedisCache{}
+	cache.Connect()
+
 	for _, p := range positions {
-		cache := i.RedisCache{}
-		cache.Connect()
 		err := cache.Set(i.CacheData{Key: string(p.Name), Value: string(rune(p.Distance))})
 		if err != nil {
 			return err

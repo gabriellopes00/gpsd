@@ -10,5 +10,6 @@ func GetPositionPath(entrypoint *d.Position, positions []*d.Position, paths chan
 		time.Sleep(time.Millisecond * 1475)
 		paths <- p
 	}
+
 	close(paths)
 }

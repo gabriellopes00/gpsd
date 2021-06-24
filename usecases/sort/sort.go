@@ -4,6 +4,7 @@ import d "gps-worker/domain"
 
 func Sort(arr []*d.Position) []*d.Position {
 	len := len(arr)
+
 	if len == 1 {
 		return arr
 	}
@@ -37,6 +38,7 @@ func merge(left, right []*d.Position) (result []*d.Position) {
 			result[i] = right[0]
 			right = right[1:]
 		}
+
 		i++
 	}
 

@@ -11,5 +11,6 @@ func ValidateCoordinates(positions []*d.Position) error {
 			return err
 		}
 	}
+
 	return nil
 }
