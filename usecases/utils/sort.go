@@ -1,8 +1,8 @@
-package calc
+package utils
 
-import d "gps-worker/domain"
+import "github.com/gabriellopes00/gpsd/domain"
 
-func Sort(arr []*d.Position) []*d.Position {
+func Sort(arr []*domain.Position) []*domain.Position {
 	len := len(arr)
 
 	if len == 1 {
@@ -11,8 +11,8 @@ func Sort(arr []*d.Position) []*d.Position {
 
 	middle := int(len / 2)
 
-	left := make([]*d.Position, middle)
-	right := make([]*d.Position, len-middle)
+	left := make([]*domain.Position, middle)
+	right := make([]*domain.Position, len-middle)
 
 	for i := 0; i < len; i++ {
 		if i < middle {
@@ -25,8 +25,8 @@ func Sort(arr []*d.Position) []*d.Position {
 	return merge(Sort(left), Sort(right))
 }
 
-func merge(left, right []*d.Position) (result []*d.Position) {
-	result = make([]*d.Position, len(left)+len(right))
+func merge(left, right []*domain.Position) (result []*domain.Position) {
+	result = make([]*domain.Position, len(left)+len(right))
 
 	i := 0
 

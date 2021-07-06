@@ -1,48 +1,28 @@
 package main
 
 import (
-	"gps-worker/app/mock"
-	d "gps-worker/domain"
+	"fmt"
+	"github.com/gabriellopes00/gpsd/domain"
 	"log"
 
-	c "gps-worker/usecases/calc"
-	m "gps-worker/usecases/mail"
-	p "gps-worker/usecases/path"
-	s "gps-worker/usecases/sort"
-	v "gps-worker/usecases/validation"
+	"github.com/gabriellopes00/gpsd/usecases/calc"
+	sort "github.com/gabriellopes00/gpsd/usecases/utils"
+	"github.com/gabriellopes00/gpsd/usecases/validation"
 )
 
 func main() {
-	entrypoint := &d.Position{Name: "Victim", Latitude: -23.16860649763682, Longitude: -46.86898723418065}
-	positions := mock.Positions()
+	entrypoint := &domain.Position{Name: "EntryPoint", Latitude: -23.16860649763682, Longitude: -46.86898723418065}
+	positions := Positions()
 
-	// cache := infra.RedisCache{Client: redis.NewClient(&redis.Options{Addr: "localhost:6379", Password: "", DB: 0})}
-
-	// cache.Set(infra.CacheData{
-	// 	Key:   positions[0].Name,
-	// 	Value: fmt.Sprintf("%v %v", positions[0].Latitude, positions[0].Longitude),
-	// })
-
-	if err := v.ValidateCoordinates(positions); err != nil {
+	if err := validation.ValidateCoordinates(positions); err != nil {
 		log.Fatalln(err)
 	}
 
-	paths := make(chan *d.Position)
+	inRadius := calc.GetInRadius(entrypoint, positions)
+	calc.GetDistances(entrypoint, inRadius)
+	ordered := sort.Sort(inRadius)
 
-	inRadius := c.GetInRadius(entrypoint, positions)
-	c.GetDistances(entrypoint, inRadius)
-	ordered := s.Sort(inRadius)
-	go p.GetPositionPath(entrypoint, s.Filter(ordered), paths)
-	m.SendHelperMail(paths)
-
-	// data, err := cache.Get(positions[0].Name)
-	// if err != nil {
-	// 	log.Fatalln(err)
-	// }
-
-	// lat, _ := strconv.ParseFloat(strings.Split(data.Value, " ")[0], 64)
-	// lng, _ := strconv.ParseFloat(strings.Split(data.Value, " ")[1], 64)
-	// cached := d.Position{Name: data.Key, Latitude: lat, Longitude: lng}
-
-	// fmt.Println(cached)
+	for _, p := range ordered {
+		fmt.Println(p)
+	}
 }

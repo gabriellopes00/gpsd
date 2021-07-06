@@ -6,7 +6,7 @@ func deg2rad(deg float64) float64 {
 	return (deg * m.Pi) / 180
 }
 
-func CalcDistance(lat1, lng1, lat2, lng2 float64) uint16 {
+func Distance(lat1, lng1, lat2, lng2 float64) uint16 {
 	const earthRadius = 6371
 
 	degLat := deg2rad(lat2 - lat1)
